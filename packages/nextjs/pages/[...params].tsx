@@ -14,12 +14,11 @@ import { ContractUI } from "~~/components/scaffold-eth";
 import useFetchContractAbi from "~~/hooks/useFetchContractAbi";
 import { useHeimdall } from "~~/hooks/useHeimdall";
 import { useGlobalState } from "~~/services/store/store";
-import { getNetworkName, parseAndCorrectJSON } from "~~/utils/abi";
+import { decodeAbiFromUrl, getNetworkName, parseAndCorrectJSON } from "~~/utils/abi";
 import { getAlchemyHttpUrl, notification } from "~~/utils/scaffold-eth";
 
 interface ParsedQueryContractDetailsPage extends ParsedUrlQuery {
-  contractAddress: Address;
-  network: string;
+  params: string[];
 }
 
 type ContractData = {
@@ -30,26 +29,42 @@ type ContractData = {
 type ServerSideProps = {
   addressFromUrl: Address | null;
   chainIdFromUrl: number | null;
+  abiFromUrl: Abi | null;
 };
 
 export const getServerSideProps: GetServerSideProps = async context => {
-  const contractAddress = context.params?.contractAddress as Address | undefined;
-  const network = context.params?.network as string | undefined;
+  const params = context.params?.params as string[] | undefined;
 
+  if (!params || params.length < 2) {
+    return { notFound: true };
+  }
+
+  const [contractAddress, network, encodedAbi] = params;
   const formattedAddress = contractAddress && isAddress(contractAddress) ? contractAddress : null;
   const formattedChainId = network ? parseInt(network, 10) : null;
+
+  let decodedAbi = null;
+  if (encodedAbi) {
+    try {
+      decodedAbi = decodeAbiFromUrl(encodedAbi);
+    } catch (error) {
+      console.error("Failed to decode ABI from URL:", error);
+    }
+  }
 
   return {
     props: {
       addressFromUrl: formattedAddress,
       chainIdFromUrl: formattedChainId,
+      abiFromUrl: decodedAbi,
     },
   };
 };
 
-const ContractDetailPage = ({ addressFromUrl, chainIdFromUrl }: ServerSideProps) => {
+const ContractDetailPage = ({ addressFromUrl, chainIdFromUrl, abiFromUrl }: ServerSideProps) => {
   const router = useRouter();
-  const { contractAddress, network } = router.query as ParsedQueryContractDetailsPage;
+  const { params } = router.query as ParsedQueryContractDetailsPage;
+  const [contractAddress, network] = params || [];
   const [localContractAbi, setLocalContractAbi] = useState<string>("");
   const [isUseLocalAbi, setIsUseLocalAbi] = useState(false);
   const [localContractData, setLocalContractData] = useState<ContractData | null>(null);
@@ -78,7 +93,7 @@ const ContractDetailPage = ({ addressFromUrl, chainIdFromUrl }: ServerSideProps)
   } = useFetchContractAbi({
     contractAddress,
     chainId: parseInt(network),
-    disabled: contractAbi.length > 0,
+    disabled: abiFromUrl !== null || contractAbi.length > 0,
   });
 
   const { abi: heimdallAbi, isLoading: isHeimdallFetching } = useHeimdall({
@@ -89,18 +104,19 @@ const ContractDetailPage = ({ addressFromUrl, chainIdFromUrl }: ServerSideProps)
     disabled: network === "31337" || !contractAddress,
   });
 
-  const effectiveContractData =
-    contractAbi.length > 0
-      ? { abi: contractAbi, address: contractAddress }
-      : isUseLocalAbi && localContractData
-      ? localContractData
-      : fetchedContractData
-      ? { abi: fetchedContractData.abi, address: contractAddress }
-      : decompiledAbi
-      ? { abi: decompiledAbi, address: contractAddress }
-      : null;
+  const effectiveContractData = abiFromUrl
+    ? { abi: abiFromUrl, address: contractAddress }
+    : contractAbi.length > 0
+    ? { abi: contractAbi, address: contractAddress }
+    : isUseLocalAbi && localContractData
+    ? localContractData
+    : fetchedContractData
+    ? { abi: fetchedContractData.abi, address: contractAddress }
+    : decompiledAbi
+    ? { abi: decompiledAbi, address: contractAddress }
+    : null;
 
-  const error = isUseLocalAbi ? null : fetchError;
+  const error = isUseLocalAbi || abiFromUrl ? null : fetchError;
 
   useEffect(() => {
     if (network) {
@@ -151,7 +167,7 @@ const ContractDetailPage = ({ addressFromUrl, chainIdFromUrl }: ServerSideProps)
       <div className="bg-base-100 h-screen flex flex-col">
         <MiniHeader />
         <div className="flex flex-col gap-y-6 lg:gap-y-8 flex-grow h-full overflow-hidden">
-          {isLoading && !isUseLocalAbi ? (
+          {isLoading && !isUseLocalAbi && !abiFromUrl ? (
             <div className="flex justify-center h-full mt-14">
               <span className="loading loading-spinner text-primary h-14 w-14"></span>
             </div>
