@@ -61,4 +61,34 @@ describe("Contract Interaction", () => {
     cy.get(".loading-spinner", { timeout: 10000 }).should("not.exist");
     cy.interactWithMethod("balanceOf", "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045");
   });
+
+  it("should load contract directly via URL path parameters with encoded ABI", () => {
+    const contractAddress = "0xB8fCC66d613e5f54ee6A425DDbf4a2fDBE4Dedee";
+    const chainId = "1";
+    const encodedAbi =
+      "W3siaW5wdXRzIjpbeyJpbnRlcm5hbFR5cGUiOiJhZGRyZXNzIiwibmFtZSI6Il9pbml0aWFsT3duZXIiLCJ0eXBlIjoiYWRkcmVzcyJ9XSwic3RhdGVNdXRhYmlsaXR5Ijoibm9ucGF5YWJsZSIsInR5cGUiOiJjb25zdHJ1Y3RvciJ9LHsiaW5wdXRzIjpbeyJpbnRlcm5hbFR5cGUiOiJhZGRyZXNzIiwibmFtZSI6Im93bmVyIiwidHlwZSI6ImFkZHJlc3MifV0sIm5hbWUiOiJPd25hYmxlSW52YWxpZE93bmVyIiwidHlwZSI6ImVycm9yIn0seyJpbnB1dHMiOlt7ImludGVybmFsVHlwZSI6ImFkZHJlc3MiLCJuYW1lIjoiYWNjb3VudCIsInR5cGUiOiJhZGRyZXNzIn1dLCJuYW1lIjoiT3duYWJsZVVuYXV0aG9yaXplZEFjY291bnQiLCJ0eXBlIjoiZXJyb3IifSx7ImFub255bW91cyI6ZmFsc2UsImlucHV0cyI6W3siaW5kZXhlZCI6dHJ1ZSwiaW50ZXJuYWxUeXBlIjoiYWRkcmVzcyIsIm5hbWUiOiJwcmV2aW91c093bmVyIiwidHlwZSI6ImFkZHJlc3MifSx7ImluZGV4ZWQiOnRydWUsImludGVybmFsVHlwZSI6ImFkZHJlc3MiLCJuYW1lIjoibmV3T3duZXIiLCJ0eXBlIjoiYWRkcmVzcyJ9XSwibmFtZSI6Ik93bmVyc2hpcFRyYW5zZmVyU3RhcnRlZCIsInR5cGUiOiJldmVudCJ9LHsiYW5vbnltb3VzIjpmYWxzZSwiaW5wdXRzIjpbeyJpbmRleGVkIjp0cnVlLCJpbnRlcm5hbFR5cGUiOiJhZGRyZXNzIiwibmFtZSI6InByZXZpb3VzT3duZXIiLCJ0eXBlIjoiYWRkcmVzcyJ9LHsiaW5kZXhlZCI6dHJ1ZSwiaW50ZXJuYWxUeXBlIjoiYWRkcmVzcyIsIm5hbWUiOiJuZXdPd25lciIsInR5cGUiOiJhZGRyZXNzIn1dLCJuYW1lIjoiT3duZXJzaGlwVHJhbnNmZXJyZWQiLCJ0eXBlIjoiZXZlbnQifSx7ImlucHV0cyI6W10sIm5hbWUiOiJVUEdSQURFX0lOVEVSRkFDRV9WRVJTSU9OIiwib3V0cHV0cyI6W3siaW50ZXJuYWxUeXBlIjoic3RyaW5nIiwibmFtZSI6IiIsInR5cGUiOiJzdHJpbmcifV0sInN0YXRlTXV0YWJpbGl0eSI6InZpZXciLCJ0eXBlIjoiZnVuY3Rpb24ifSx7ImlucHV0cyI6W10sIm5hbWUiOiJhY2NlcHRPd25lcnNoaXAiLCJvdXRwdXRzIjpbXSwic3RhdGVNdXRhYmlsaXR5Ijoibm9ucGF5YWJsZSIsInR5cGUiOiJmdW5jdGlvbiJ9LHsiaW5wdXRzIjpbXSwibmFtZSI6Im93bmVyIiwib3V0cHV0cyI6W3siaW50ZXJuYWxUeXBlIjoiYWRkcmVzcyIsIm5hbWUiOiIiLCJ0eXBlIjoiYWRkcmVzcyJ9XSwic3RhdGVNdXRhYmlsaXR5IjoidmlldyIsInR5cGUiOiJmdW5jdGlvbiJ9LHsiaW5wdXRzIjpbXSwibmFtZSI6InBlbmRpbmdPd25lciIsIm91dHB1dHMiOlt7ImludGVybmFsVHlwZSI6ImFkZHJlc3MiLCJuYW1lIjoiIiwidHlwZSI6ImFkZHJlc3MifV0sInN0YXRlTXV0YWJpbGl0eSI6InZpZXciLCJ0eXBlIjoiZnVuY3Rpb24ifSx7ImlucHV0cyI6W10sIm5hbWUiOiJyZW5vdW5jZU93bmVyc2hpcCIsIm91dHB1dHMiOltdLCJzdGF0ZU11dGFiaWxpdHkiOiJub25wYXlhYmxlIiwidHlwZSI6ImZ1bmN0aW9uIn0seyJpbnB1dHMiOlt7ImludGVybmFsVHlwZSI6ImFkZHJlc3MiLCJuYW1lIjoiX25ld093bmVyIiwidHlwZSI6ImFkZHJlc3MifV0sIm5hbWUiOiJ0cmFuc2Zlck93bmVyc2hpcCIsIm91dHB1dHMiOltdLCJzdGF0ZU11dGFiaWxpdHkiOiJub25wYXlhYmxlIiwidHlwZSI6ImZ1bmN0aW9uIn0seyJpbnB1dHMiOlt7ImludGVybmFsVHlwZSI6ImNvbnRyYWN0IElUcmFuc3BhcmVudFVwZ3JhZGVhYmxlUHJveHkiLCJuYW1lIjoicHJveHkiLCJ0eXBlIjoiYWRkcmVzcyJ9LHsiaW50ZXJuYWxUeXBlIjoiYWRkcmVzcyIsIm5hbWUiOiJpbXBsZW1lbnRhdGlvbiIsInR5cGUiOiJhZGRyZXNzIn0seyJpbnRlcm5hbFR5cGUiOiJieXRlcyIsIm5hbWUiOiJkYXRhIiwidHlwZSI6ImJ5dGVzIn1dLCJuYW1lIjoidXBncmFkZUFuZENhbGwiLCJvdXRwdXRzIjpbXSwic3RhdGVNdXRhYmlsaXR5IjoicGF5YWJsZSIsInR5cGUiOiJmdW5jdGlvbiJ9XQ";
+
+    cy.visit(`http://localhost:3000/${contractAddress}/${chainId}/${encodedAbi}`);
+
+    cy.url().should("include", `/${contractAddress}/${chainId}/${encodedAbi}`);
+
+    cy.get(".loading-spinner", { timeout: 10000 }).should("not.exist");
+
+    cy.contains(contractAddress).should("be.visible");
+
+    cy.contains("Ethereum").should("be.visible");
+
+    cy.contains("owner").should("be.visible");
+    cy.contains("pendingOwner").should("be.visible");
+    cy.contains("transferOwnership").should("be.visible");
+    cy.contains("acceptOwnership").should("be.visible");
+    cy.contains("renounceOwnership").should("be.visible");
+    cy.contains("UPGRADE_INTERFACE_VERSION").should("be.visible");
+    cy.contains("upgradeAndCall").should("be.visible");
+
+    cy.contains("owner").click();
+    cy.get('button[data-testid="read-contract-button"]', { timeout: 5000 }).should("be.visible");
+
+    cy.get('input[placeholder="Contract address"]').should("not.exist");
+  });
 });
