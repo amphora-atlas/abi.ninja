@@ -9,41 +9,15 @@ declare namespace Cypress {
     wakeUpHeimdall(): Chainable<void>;
 
     /**
-     * Custom command to load a contract by address.
-     * @example cy.loadContract('0x1234...')
+     * Custom command to visit a contract directly via URL path parameters.
+     * @example cy.visitContract('0x1234...', '1', 'encodedAbi')
      */
-    loadContract(address: string): Chainable<void>;
-
-    /**
-     * Custom command to select a network from the dropdown.
-     * @example cy.selectNetwork('Ethereum')
-     */
-    selectNetwork(networkName: string): Chainable<void>;
+    visitContract(contractAddress: string, chainId: string, encodedAbi?: string): Chainable<void>;
 
     /**
      * Custom command to interact with a specific contract method.
      * @example cy.interactWithMethod('balanceOf', '0x1234...')
      */
     interactWithMethod(methodName: string, inputValue: string): Chainable<void>;
-
-    /**
-     * Custom command to add a custom chain.
-     * @example cy.addCustomChain({ id: '1', name: 'MyChain', ... })
-     */
-    addCustomChain(chainDetails: {
-      id: string;
-      name: string;
-      nativeCurrencyName: string;
-      nativeCurrencySymbol: string;
-      nativeCurrencyDecimals: string;
-      rpcUrl: string;
-      blockExplorer: string;
-    }): Chainable<void>;
-
-    /**
-     * Custom command to import a custom ABI.
-     * @example cy.importABI('[ ... ]')
-     */
-    importABI(abi: string): Chainable<void>;
   }
 }
