@@ -13,7 +13,7 @@
     "vercel": "vercel",
     "vercel:yolo": "vercel --build-env NEXT_PUBLIC_IGNORE_BUILD_ERROR=true",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run --browser chrome"
+    "cypress:run": "cypress run --browser electron"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.11",
@@ -22,6 +22,7 @@
     "@uniswap/sdk-core": "^4.0.1",
     "@uniswap/v2-sdk": "^3.0.1",
     "@vercel/og": "^0.6.2",
+    "@wagmi/core": "^2.17.3",
     "@web3icons/react": "^3.6.0",
     "blo": "^1.0.1",
     "burner-connector": "0.0.9",
