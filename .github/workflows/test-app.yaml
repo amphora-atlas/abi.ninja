@@ -1,4 +1,4 @@
-name: E2E on Chrome
+name: E2E on Electron
 
 on:
   push:
@@ -39,7 +39,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           working-directory: packages/nextjs
-          browser: chrome
+          browser: electron
           start: pnpm --filter @se-2/nextjs dev
           wait-on: "http://localhost:3000"
           install: false
