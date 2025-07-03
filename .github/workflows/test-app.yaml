@@ -1,4 +1,4 @@
-name: E2E on Chrome
+name: E2E on Electron
 
 on:
   push:
@@ -15,6 +15,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.0.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
       - name: Create .env.local in nextjs
         run: |
           touch packages/nextjs/.env.local
@@ -25,6 +39,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           working-directory: packages/nextjs
-          browser: chrome
-          start: yarn dev
+          browser: electron
+          start: pnpm --filter @se-2/nextjs dev
           wait-on: "http://localhost:3000"
+          install: false

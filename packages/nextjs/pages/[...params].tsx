@@ -105,15 +105,15 @@ const ContractDetailPage = ({ addressFromUrl, chainIdFromUrl, abiFromUrl }: Serv
   });
 
   const effectiveContractData = abiFromUrl
-    ? { abi: abiFromUrl, address: contractAddress }
+    ? { abi: abiFromUrl, address: contractAddress as `0x${string}` }
     : contractAbi.length > 0
-    ? { abi: contractAbi, address: contractAddress }
+    ? { abi: contractAbi, address: contractAddress as `0x${string}` }
     : isUseLocalAbi && localContractData
     ? localContractData
     : fetchedContractData
-    ? { abi: fetchedContractData.abi, address: contractAddress }
+    ? { abi: fetchedContractData.abi, address: contractAddress as `0x${string}` }
     : decompiledAbi
-    ? { abi: decompiledAbi, address: contractAddress }
+    ? { abi: decompiledAbi, address: contractAddress as `0x${string}` }
     : null;
 
   const error = isUseLocalAbi || abiFromUrl ? null : fetchError;
@@ -136,7 +136,7 @@ const ContractDetailPage = ({ addressFromUrl, chainIdFromUrl, abiFromUrl }: Serv
       const parsedAbi = parseAndCorrectJSON(localContractAbi);
       if (parsedAbi) {
         setIsUseLocalAbi(true);
-        setLocalContractData({ abi: parsedAbi, address: contractAddress });
+        setLocalContractData({ abi: parsedAbi, address: contractAddress as `0x${string}` });
         notification.success("ABI successfully loaded.");
       } else {
         throw new Error("Parsed ABI is null or undefined");

@@ -1,13 +1,9 @@
 node_modules
 
-# dependencies, yarn, etc
-# yarn / eslint
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
+# dependencies, pnpm, etc
+# pnpm / eslint
+node_modules/
+.pnpm-store/
 .eslintcache
 .vscode/**
 .DS_Store
