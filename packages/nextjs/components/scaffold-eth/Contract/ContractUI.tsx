@@ -12,6 +12,7 @@ import { Address, Balance, MethodSelector } from "~~/components/scaffold-eth";
 import { useNetworkColor } from "~~/hooks/scaffold-eth";
 import useFetchContractCreationInfo from "~~/hooks/useFetchContractCreationInfo";
 import { useGlobalState } from "~~/services/store/store";
+import { encodeAbiForUrl } from "~~/utils/abi";
 import { getBlockExplorerTxLink, getTargetNetworks } from "~~/utils/scaffold-eth";
 
 type ContractUIProps = {
@@ -77,6 +78,11 @@ export const ContractUI = ({ className = "", initialContractData }: ContractUIPr
     chainId,
   });
 
+  const generateContractUrl = (contractAddress: string, chainId: string, contractAbi?: Abi) => {
+    const baseUrl = `/${contractAddress}/${chainId}`;
+    return contractAbi ? `${baseUrl}/${encodeAbiForUrl(contractAbi)}` : baseUrl;
+  };
+
   const updateUrlWithSelectedMethods = (selectedMethods: string[]) => {
     const currentQuery = new URLSearchParams(window.location.search);
     if (selectedMethods.length > 0) {
@@ -84,7 +90,7 @@ export const ContractUI = ({ className = "", initialContractData }: ContractUIPr
     } else {
       currentQuery.delete("methods");
     }
-    const newPath = `/${initialContractData.address}/${network}`;
+    const newPath = generateContractUrl(initialContractData.address, network || "", initialContractData.abi);
 
     router.push({ pathname: newPath, query: currentQuery.toString() }, undefined, { shallow: true });
   };
