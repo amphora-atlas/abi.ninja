@@ -85,7 +85,7 @@ export default async function handler(request: NextRequest) {
 
   const networkName = getNetworkName(+networkId);
   const networkIcon = getNetworkIcon(+networkId);
-  const contractName = await getContractName(contractAddress, +networkId);
+  const contractName = await getContractName(contractAddress as `0x${string}`, +networkId);
 
   return new ImageResponse(
     (

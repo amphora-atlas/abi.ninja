@@ -32,7 +32,7 @@ ABI Ninja (v2) is built with 🏗 [Scaffold-ETH 2](https://github.com/scaffold-e
 Before you begin, you need to install the following tools:
 
 - [Node (v18 LTS)](https://nodejs.org/en/download/)
-- Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
+- pnpm ([v9+](https://pnpm.io/installation))
 - [Git](https://git-scm.com/downloads)
 
 1. Clone this repo & install dependencies
@@ -40,13 +40,13 @@ Before you begin, you need to install the following tools:
 ```
 git clone https://github.com/BuidlGuidl/abi.ninja.git
 cd abi.ninja
-yarn install
+pnpm install
 ```
 
 2. Start the frontend
 
 ```
-yarn start
+pnpm start
 ```
 
 Visit your local instance of ABI Ninja at: `http://localhost:3000`.
@@ -62,13 +62,13 @@ To run the Cypress tests:
 1. Ensure your development server is running:
 
 ```
-yarn start
+pnpm start
 ```
 
 2. In a new terminal window, run the Cypress tests:
 
 ```
-yarn cypress:open
+pnpm cypress:open
 ```
 
 This will open the Cypress Test Runner, where you can run individual tests or the entire suite.
@@ -76,7 +76,7 @@ This will open the Cypress Test Runner, where you can run individual tests or th
 3. For headless testing, use:
 
 ```
-yarn cypress:run
+pnpm cypress:run
 ```
 
 ## Test Coverage
