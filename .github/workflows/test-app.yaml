@@ -26,5 +26,5 @@ jobs:
         with:
           working-directory: packages/nextjs
           browser: chrome
-          start: yarn dev
+          start: pnpm dev
           wait-on: "http://localhost:3000"
